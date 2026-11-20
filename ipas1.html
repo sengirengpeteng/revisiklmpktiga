@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pendahuluan Produk-Produk Recycle</title>
+<style>
+:root{--hijau:#1f7a4d;--hijau-tua:#0f3d2a;--hijau-muda:#e6f4ea;--biru:#1d5f8a;--biru-muda:#e4f0f8;--teks:#1d2b24;--abu:#5c6b63;--garis:#d5e3da;--kuning:#f2b632}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--teks);background:#f8fbf9;line-height:1.65}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.2}
+
+/* Navbar */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--garis)}
+nav{max-width:1000px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--hijau-tua)}
+.brand img{height:36px;width:auto}
+nav ul{display:flex;gap:20px;list-style:none}
+nav ul a{font-size:.95rem;color:var(--abu)}
+nav ul a:hover{color:var(--hijau)}
+
+/* Hero */
+.hero{background:linear-gradient(160deg,var(--hijau-tua),var(--hijau));color:#fff;padding:56px 0 0}
+.hero .wrap{display:grid;gap:32px;align-items:center;grid-template-columns:1.1fr .9fr}
+.chip{display:inline-block;background:var(--kuning);color:#3a2a00;font-weight:700;font-size:.85rem;padding:4px 14px;border-radius:99px;margin-bottom:16px}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:14px}
+.hero p{color:#d6efe0;max-width:480px}
+.hero figure{align-self:end}
+.hero img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:18px 18px 0 0;background:#cfe6d8}
+@media(max-width:760px){.hero .wrap{grid-template-columns:1fr}.hero figure{order:-1}}
+
+/* Section */
+section{padding:56px 0}
+.judul{margin-bottom:24px}
+.judul small{display:block;color:var(--hijau);font-weight:700;margin-bottom:4px}
+.judul h2{font-size:clamp(1.5rem,3.6vw,2rem);color:var(--hijau-tua)}
+.pengantar{background:#fff;border:1px solid var(--garis);border-left:6px solid var(--hijau);border-radius:14px;padding:24px 26px;font-size:1.05rem}
+
+/* Kartu */
+.grid2{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.kartu{background:#fff;border:1px solid var(--garis);border-radius:16px;padding:24px;box-shadow:0 6px 18px rgba(15,61,42,.06)}
+.kartu .ikon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.6rem;margin-bottom:14px}
+.kartu h3{font-size:1.2rem;margin-bottom:6px}
+.kartu p{color:var(--abu);font-size:.97rem}
+.organik .ikon{background:var(--hijau-muda)}
+.organik h3{color:var(--hijau)}
+.anorganik .ikon{background:var(--biru-muda)}
+.anorganik h3{color:var(--biru)}
+.contoh{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.contoh span{font-size:.82rem;padding:3px 10px;border-radius:99px;background:var(--hijau-muda);color:var(--hijau-tua)}
+.anorganik .contoh span{background:var(--biru-muda);color:#12405e}
+
+/* Sumber */
+.sumber{background:#fff}
+.sumber .kartu{border-top:5px solid var(--kuning)}
+
+/* Pengolahan */
+.olah{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.panel{border-radius:18px;padding:28px;color:#fff}
+.panel.o{background:linear-gradient(160deg,#1f7a4d,#2f9e66)}
+.panel.a{background:linear-gradient(160deg,#1d5f8a,#2f84b8)}
+.panel h3{font-size:1.35rem;margin-bottom:14px}
+.panel ul{list-style:none;display:grid;gap:12px}
+.panel li{background:rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;display:flex;gap:10px}
+.panel li::before{content:"✔";font-weight:700}
+
+/* 3R */
+.r3{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.r3 .kartu{text-align:center}
+.r3 .no{width:56px;height:56px;border-radius:50%;background:var(--hijau);color:#fff;font-size:1.5rem;font-weight:800;display:grid;place-items:center;margin:0 auto 12px}
+.penutup{margin-top:28px;background:var(--hijau-muda);border-radius:14px;padding:22px 26px;text-align:center;color:var(--hijau-tua);font-weight:600}
+.kembali{text-align:center;margin-top:32px}
+.btn{display:inline-block;background:var(--hijau);color:#fff;font-weight:600;padding:12px 26px;border-radius:10px}
+.btn:hover{opacity:.88}
+
+/* Footer */
+footer{background:var(--hijau-tua);color:#cfe6d8;padding:48px 0 22px;scroll-margin-top:60px}
+footer .grid2{margin-bottom:26px}
+footer img{height:44px;width:auto;margin-bottom:10px}
+footer h3,footer h4{color:#fff;margin-bottom:10px}
+footer h5{color:#fff;font-size:1rem;margin:12px 0 2px}
+footer a{display:block;font-size:.93rem}
+footer a:hover{color:#fff}
+.hak{text-align:center;border-top:1px solid rgba(255,255,255,.15);padding-top:18px;font-size:.88rem}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="/index.html" class="brand"><img src="fotoipa.jpeg" alt="Logo"> SampahKu</a>
+    <ul>
+      <li><a href="/index.html">Beranda</a></li>
+      <li><a href="#kontak">Kontak</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <span class="chip">Materi IPAS</span>
+      <h1>Pendahuluan Produk-Produk Recycle</h1>
+      <p>Kenali sampah, pahami sumbernya, lalu ubah menjadi karya yang bernilai.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PENGANTAR -->
+<section>
+  <div class="wrap">
+    <div class="judul"><small>Pengantar</small><h2>Mengenal sampah dan dampaknya</h2></div>
+    <p class="pengantar">Sampah adalah sisa aktivitas manusia atau alam yang tidak lagi digunakan. Jika tidak dikelola dengan baik, sampah dapat mencemari lingkungan dan memengaruhi kesehatan. Memahami jenis serta sumbernya membantu kita memilih cara pengolahan yang tepat.</p>
+  </div>
+</section>
+
+<!-- JENIS -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="judul"><small>Kenali dulu</small><h2>Jenis sampah</h2></div>
+    <div class="grid2">
+      <div class="kartu organik">
+        <div class="ikon">🍃</div>
+        <h3>Organik</h3>
+        <p>Mudah terurai secara alami.</p>
+        <div class="contoh"><span>Sisa makanan</span><span>Daun</span><span>Kulit buah</span><span>Rumput</span></div>
+      </div>
+      <div class="kartu anorganik">
+        <div class="ikon">🥫</div>
+        <h3>Anorganik</h3>
+        <p>Sulit terurai oleh alam.</p>
+        <div class="contoh"><span>Plastik</span><span>Kaleng</span><span>Kaca</span><span>Styrofoam</span><span>Logam</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMBER -->
+<section class="sumber">
+  <div class="wrap">
+    <div class="judul"><small>Dari mana asalnya?</small><h2>Sumber sampah</h2></div>
+    <div class="grid2">
+      <div class="kartu"><div class="ikon" style="background:#fdf3d8">🏠</div><h3>Rumah tangga</h3><p>Sisa makanan, kulit buah, plastik belanja, dan botol.</p></div>
+      <div class="kartu"><div class="ikon" style="background:#fdf3d8">🌾</div><h3>Pertanian</h3><p>Jerami, daun, mulsa plastik, dan kemasan pupuk.</p></div>
+      <div class="kartu"><div class="ikon" style="background:#fdf3d8">🏭</div><h3>Industri</h3><p>Sisa bahan, plastik, logam, kaca, dan limbah produksi.</p></div>
+      <div class="kartu"><div class="ikon" style="background:#fdf3d8">🏫</div><h3>Sekolah/kantor</h3><p>Kertas, kemasan makanan, dan kartrid tinta.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PENGOLAHAN -->
+<section>
+  <div class="wrap">
+    <div class="judul"><small>Saatnya beraksi</small><h2>Cara mengolah sampah</h2></div>
+    <div class="olah">
+      <div class="panel o">
+        <h3>🌱 Mengolah sampah organik</h3>
+        <ul>
+          <li>Olah sisa makanan dan dedaunan menjadi kompos.</li>
+          <li>Manfaatkan limbah organik tertentu untuk menghasilkan biogas.</li>
+          <li>Gunakan sisa sayuran yang aman sebagai pakan ternak.</li>
+        </ul>
+      </div>
+      <div class="panel a">
+        <h3>♻️ Mengolah sampah anorganik</h3>
+        <ul>
+          <li>Daur ulang plastik, botol, dan kaleng menjadi bahan atau produk baru.</li>
+          <li>Gunakan kembali barang bekas untuk pot atau hiasan.</li>
+          <li>Pilah dan setorkan bahan yang dapat didaur ulang ke bank sampah.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3R -->
+<section class="sumber">
+  <div class="wrap">
+    <div class="judul"><small>Kebiasaan kecil, dampak besar</small><h2>Terapkan prinsip 3R</h2></div>
+    <div class="r3">
+      <div class="kartu"><div class="no">1</div><h3>Reduce</h3><p>Kurangi barang sekali pakai dan pilih produk yang tahan lama.</p></div>
+      <div class="kartu"><div class="no">2</div><h3>Reuse</h3><p>Gunakan kembali barang yang masih layak untuk fungsi lain.</p></div>
+      <div class="kartu"><div class="no">3</div><h3>Recycle</h3><p>Olah sampah menjadi bahan atau produk baru yang bermanfaat.</p></div>
+    </div>
+    <p class="penutup">Dengan memilah sampah dan menerapkan 3R, kita dapat mengurangi pencemaran sekaligus mengubah sampah menjadi sumber daya yang berguna.</p>
+    <div class="kembali"><a class="btn" href="/index.html">← Kembali ke Beranda</a></div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer id="kontak">
+  <div class="wrap">
+    <div class="grid2">
+      <div>
+        <img src="https://kolaborasi-rouge.vercel.app/assets/gambar/logo.png" alt="Logo">
+        <h3>Trash to Money</h3>
+        <p>Website edukasi dan inovasi pengelolaan sampah untuk proyek kolaboratif Kelompok 3.</p>
+      </div>
+      <div>
+        <h4>Anggota Kelompok</h4>
+        <h5>Berlian Muhammad Firdaus</h5>
+        <a href="https://wa.me/62882008658802">WhatsApp: 0882-0086-58802</a>
+        <h5>Dyah Ayu Wulandari</h5>
+        <a href="https://wa.me/6288983251695">WhatsApp: 0889-8325-1695</a>
+        <h5>Muhamad Danian Alrizqi</h5>
+        <a href="https://wa.me/6285866255542">WhatsApp: 0858-6625-5542</a>
+      </div>
+      <div>
+        <h4>Hubungi Kami</h4>
+        <p>Jl. Darun Naim Karangduren, Kec. Tengaran 50775 Kab. Semarang, Jawa Tengah</p>
+        <a href="mailto:berlian.p26037@satamail.my.id">berlian.p26037@satamail.my.id</a>
+        <a href="tel:+62882008658802">+62 882-0086-58802</a>
+      </div>
+    </div>
+    <p class="hak">© 2026 <b>Trash to Money</b> · Kelompok 3 · SMKN Tengaran · Hak cipta dilindungi.</p>
+  </div>
+</footer>
+
+</body>
+</html>

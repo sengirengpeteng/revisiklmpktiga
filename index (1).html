@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trash to Money</title>
+<style>
+:root{
+  --hijau:#1f7a4d;--hijau-tua:#0f3d2a;--hijau-muda:#e6f4ea;--teks:#1d2b24;--abu:#4f5d56;--putih:#fff;--garis:rgba(255,255,255,.65);
+  --awan-1:#e9edf0;--awan-2:#c9d0d5;--awan-3:#9aa5ac;--awan-4:#6b777f;
+  --panel:linear-gradient(160deg,rgba(255,255,255,.94) 0%,rgba(236,241,244,.86) 55%,rgba(214,222,228,.8) 100%);--panel-isi:linear-gradient(180deg,rgba(255,255,255,.55),rgba(222,236,228,.8));--aksen:#4f7f91;--kaca:rgba(255,255,255,.62);--kaca-tebal:rgba(255,255,255,.82);
+  --bayang:0 8px 24px rgba(40,55,65,.12),0 2px 6px rgba(40,55,65,.08);
+  --bayang-tinggi:0 18px 40px rgba(40,55,65,.2),0 4px 10px rgba(40,55,65,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--teks);line-height:1.65;position:relative;min-height:100vh;
+  background:linear-gradient(180deg,var(--awan-3) 0%,var(--awan-2) 28%,var(--awan-1) 62%,var(--awan-2) 100%);background-attachment:fixed}
+/* Langit awan kelabu */
+body::before,body::after{content:"";position:fixed;inset:-5%;z-index:-1;pointer-events:none;background-repeat:no-repeat;background-size:cover}
+body::before{opacity:.95;background-image:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='900'><filter id='a' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.005 .009' numOctaves='5' seed='11'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.9 -.55'/></filter><rect width='100%25' height='100%25' filter='url(%23a)'/></svg>")}
+body::after{opacity:.55;background-image:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='900'><filter id='b' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.007 .012' numOctaves='4' seed='42'/><feColorMatrix values='0 0 0 0 .28 0 0 0 0 .32 0 0 0 0 .36 0 0 0 1.8 -.75'/></filter><rect width='100%25' height='100%25' filter='url(%23b)'/></svg>")}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+section{padding:72px 20px;scroll-margin-top:64px;position:relative}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{line-height:1.2}
+h2{font-size:clamp(1.7rem,4vw,2.3rem);margin-bottom:12px;color:var(--hijau-tua);position:relative;padding-bottom:14px;text-shadow:0 2px 0 rgba(255,255,255,.7),0 6px 18px rgba(255,255,255,.5)}
+h2::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--hijau),#6fcf97)}
+.masalah h2{text-shadow:none}
+.masalah h2::after{background:linear-gradient(90deg,#6fcf97,#e6f4ea)}
+.sub{color:#35433c;max-width:640px;margin-bottom:32px;padding:14px 20px;background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(222,230,235,.55));border-left:5px solid var(--aksen);border-radius:4px 16px 16px 4px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 6px 16px rgba(40,55,65,.1)}
+
+/* Navbar */
+header{position:sticky;top:0;z-index:50;background:rgba(240,243,245,.72);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid rgba(255,255,255,.7);box-shadow:0 4px 18px rgba(40,55,65,.1)}
+nav{max-width:1080px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;color:var(--hijau-tua)}
+.brand img{height:36px;width:auto}
+nav ul{display:flex;gap:6px;list-style:none;flex-wrap:wrap}
+nav ul a{font-size:.95rem;color:#3d4a44;padding:7px 14px;border-radius:99px;border-bottom:0;transition:background .2s,color .2s}
+nav ul a:hover{color:var(--hijau);background:rgba(255,255,255,.7)}
+nav ul a.aktif{color:#fff;font-weight:600;background:linear-gradient(135deg,var(--hijau),#2b9a64);box-shadow:0 4px 10px rgba(31,122,77,.35)}
+.menu-btn{display:none;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);border-radius:10px;width:42px;height:38px;font-size:1.3rem;line-height:1;color:var(--hijau-tua);cursor:pointer;box-shadow:var(--bayang)}
+
+/* Hero */
+#home{background:radial-gradient(ellipse at 20% 0%,rgba(255,255,255,.55),transparent 60%);padding-top:96px}
+.badge{display:inline-block;background:linear-gradient(135deg,var(--hijau),#2b9a64);color:#fff;padding:5px 16px;border-radius:99px;font-size:.85rem;margin-bottom:18px;box-shadow:0 6px 14px rgba(31,122,77,.35)}
+#home h1{font-size:clamp(2.2rem,6vw,3.8rem);color:var(--hijau-tua);max-width:760px;margin-bottom:18px;text-shadow:0 2px 0 rgba(255,255,255,.55),0 8px 24px rgba(255,255,255,.4)}
+#home p.lead{max-width:640px;color:#2c3933;font-size:1.1rem;margin-bottom:28px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(226,233,237,.6));border-left:5px solid var(--hijau);border-radius:4px 18px 18px 4px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:var(--bayang)}
+.btn{display:inline-block;padding:12px 26px;border-radius:12px;font-weight:600;border:2px solid var(--hijau);cursor:pointer;font-size:1rem;font-family:inherit;transition:transform .2s,box-shadow .2s,opacity .2s}
+.btn.utama{background:linear-gradient(135deg,var(--hijau),#2b9a64);color:#fff;box-shadow:0 8px 18px rgba(31,122,77,.35)}
+.btn.sekunder{color:var(--hijau);background:rgba(255,255,255,.6);margin-left:8px;backdrop-filter:blur(6px)}
+.btn:hover{opacity:.95;transform:translateY(-2px);box-shadow:0 12px 24px rgba(31,122,77,.35)}
+
+/* Masalah & solusi */
+.masalah{background:radial-gradient(ellipse at 85% 0%,rgba(255,255,255,.18),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(111,207,151,.22),transparent 55%),linear-gradient(145deg,#1b4a38 0%,#2b4a4a 55%,#3a4b57 100%);color:#e8f5ec;border-radius:20px;padding:34px;margin-top:48px;box-shadow:var(--bayang-tinggi);border:1px solid rgba(255,255,255,.12)}
+.masalah h2{color:#fff}
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.kartu{background:var(--panel);border:1px solid var(--garis);border-radius:16px;padding:24px;backdrop-filter:blur(8px);box-shadow:var(--bayang);transition:transform .25s,box-shadow .25s;border-top:4px solid var(--hijau)}
+.kartu:nth-child(2){border-top-color:var(--aksen)}
+.kartu:nth-child(3){border-top-color:#6b9e78}
+.kartu:nth-child(4){border-top-color:#7a8a96}
+.kartu:hover{transform:translateY(-6px);box-shadow:var(--bayang-tinggi)}
+.kartu h3{color:var(--hijau-tua);margin-bottom:8px}
+.kartu p{color:var(--abu);font-size:.97rem}
+.label{color:var(--hijau);font-weight:700;font-size:.9rem;margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px}
+
+/* Produk */
+#produk{background:linear-gradient(180deg,rgba(245,248,250,.5),rgba(205,214,220,.35));backdrop-filter:blur(3px)}
+.produk{background:var(--panel);border:1px solid var(--garis);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--bayang);transition:transform .25s,box-shadow .25s}
+.produk:hover{transform:translateY(-6px);box-shadow:var(--bayang-tinggi)}
+.produk img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--hijau-muda);transition:transform .5s}
+.produk:hover img{transform:scale(1.05)}
+.produk>a{overflow:hidden;display:block}
+.produk .isi{background:var(--panel-isi);padding:20px;display:flex;flex-direction:column;gap:6px;flex:1}
+.produk .tag{font-size:.78rem;color:#0f3d2a;font-weight:700;background:linear-gradient(135deg,#d9f0e2,#cfdde4);border:1px solid rgba(31,122,77,.2);align-self:flex-start;padding:2px 10px;border-radius:99px}
+.produk a.lihat{margin-top:auto;color:var(--hijau);font-weight:600}
+.produk a.lihat:hover{text-decoration:underline}
+.cta-tengah{text-align:center;margin-top:36px}
+
+/* Mapel */
+.mapel{margin-bottom:48px}
+.mapel>h3{font-size:1.5rem;color:var(--hijau-tua);margin-bottom:4px}
+.mapel>p{color:#35433c;margin-bottom:20px;display:inline-block;padding:10px 18px;background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(222,230,235,.55));border-left:5px solid var(--aksen);border-radius:4px 14px 14px 4px;backdrop-filter:blur(8px);box-shadow:0 6px 16px rgba(40,55,65,.1)}
+.mtk{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.mtk .item{background:var(--panel);border:1px solid var(--garis);border-radius:16px;padding:16px;box-shadow:var(--bayang)}
+.mtk img{width:100%;border-radius:10px;margin-bottom:12px}
+details{margin-top:8px}
+summary{cursor:pointer;color:var(--hijau-tua);font-weight:600;padding:7px 16px;display:inline-block;background:linear-gradient(135deg,rgba(31,122,77,.14),rgba(79,127,145,.14));border:1px solid rgba(31,122,77,.25);border-radius:99px;transition:background .2s,color .2s}
+summary:hover{background:linear-gradient(135deg,var(--hijau),#3f7f8f);color:#fff}
+details[open]>summary{background:linear-gradient(135deg,var(--hijau),#3f7f8f);color:#fff}
+details .dalam{margin-top:10px;font-size:.95rem;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);border-radius:12px;padding:14px 16px}
+details code{display:block;background:linear-gradient(135deg,rgba(226,243,233,.95),rgba(208,219,226,.92));color:#1d2b24;padding:12px;border-radius:10px;margin:6px 0 10px;white-space:pre-wrap;font-size:.9rem;border-left:4px solid var(--hijau);box-shadow:inset 0 1px 3px rgba(40,55,65,.12)}
+details ol{padding-left:20px}
+.laporan{background:var(--panel);border:1px solid var(--garis);border-radius:16px;padding:16px 20px;margin-bottom:12px;box-shadow:var(--bayang)}
+.laporan .judul{font-size:.85rem;color:var(--abu)}
+.laporan strong{display:block;font-size:1.05rem;color:var(--hijau-tua)}
+.laporan .teks p{margin-top:10px;font-size:.96rem}
+
+/* Anggota */
+#member-wo{background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.45))}
+.anggota{text-align:center;background:var(--panel);border:1px solid var(--garis);border-radius:20px;padding:28px 18px;box-shadow:var(--bayang);transition:transform .25s,box-shadow .25s}
+.anggota:hover{transform:translateY(-6px);box-shadow:var(--bayang-tinggi)}
+.anggota img{width:160px;height:160px;object-fit:cover;border-radius:50%;margin:0 auto 14px;border:4px solid #fff;box-shadow:0 0 0 4px var(--hijau-muda),0 10px 22px rgba(40,55,65,.25)}
+.anggota h3{color:var(--hijau-tua)}
+.anggota p{color:var(--abu)}
+.sosial{display:flex;justify-content:center;gap:14px;margin-top:10px;flex-wrap:wrap}
+.sosial a{color:var(--hijau);font-size:.9rem;font-weight:600}
+
+/* Kontak */
+.kontak{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+form{display:grid;gap:12px}
+input,textarea{width:100%;padding:12px 14px;border:1px solid rgba(120,135,145,.45);border-radius:12px;font:inherit;background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(230,236,240,.85))}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--hijau);border-color:transparent}
+.info p{margin-bottom:10px}
+
+/* Footer */
+footer{background:radial-gradient(ellipse at 80% 0%,rgba(255,255,255,.12),transparent 55%),linear-gradient(180deg,#3a4750 0%,#26363a 55%,#12382a 100%);color:#d3e4da;padding:56px 20px 24px;margin-top:0;border-top:4px solid var(--hijau)}
+footer .grid{margin-bottom:24px}
+footer img{height:44px;width:auto;margin-bottom:10px}
+footer h3,footer h4{color:#fff;margin-bottom:8px}
+footer h5{color:#fff;margin-top:8px}
+footer a{display:block;font-size:.92rem;margin-bottom:4px;transition:color .2s,transform .2s}
+footer a:hover{color:#fff;transform:translateX(4px)}
+.hak{text-align:center;border-top:1px solid rgba(255,255,255,.15);padding-top:18px;font-size:.88rem}
+
+/* Kartu mapel */
+.kartu-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+.card{background:var(--panel);border:1px solid var(--garis);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;backdrop-filter:blur(8px);box-shadow:var(--bayang);transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-5px);box-shadow:var(--bayang-tinggi)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--hijau-muda)}
+.card .isi{padding:20px;background:var(--panel-isi)}
+.card .tag{font-size:.78rem;color:#0f3d2a;font-weight:700;background:linear-gradient(135deg,#d9f0e2,#cfdde4);border:1px solid rgba(31,122,77,.2);padding:2px 10px;border-radius:99px;display:inline-block}
+.card h4{font-size:1.1rem;color:var(--hijau-tua);margin:6px 0 6px;line-height:1.3}
+.card .ringkas{color:#3a4841;font-size:.95rem;background:rgba(255,255,255,.55);border-radius:10px;padding:8px 12px;margin-top:4px}
+.card details .dalam h5{color:var(--hijau-tua);margin:14px 0 4px;font-size:.95rem}
+.card details .dalam h5:first-child{margin-top:0}
+.card details .dalam p{margin-bottom:8px}
+.card details code{font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.5}
+
+@media(max-width:760px){
+  .menu-btn{display:block}
+  nav ul{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:rgba(240,243,245,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.8);box-shadow:0 12px 24px rgba(40,55,65,.15);padding:8px 20px 14px}
+  nav ul.buka{display:flex}
+  nav ul a{display:block;padding:10px 12px;border-radius:10px;margin:2px 0}
+}
+@media(max-width:640px){.btn.sekunder{margin:10px 0 0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#home" class="brand">TrashToMoney</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Buka menu" aria-expanded="false" aria-controls="menuList">&#9776;</button>
+    <ul id="menuList">
+      <li><a href="#home">Beranda</a></li>
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#produk">Produk</a></li>
+      <li><a href="#mapel">Mata Pelajaran</a></li>
+      <li><a href="#member-wo">Anggota</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<!-- BERANDA -->
+<section id="home">
+  <div class="wrap">
+    <span class="badge">✶ Eco Innovation Project</span>
+    <h1>Limbah Hari Ini, Karya untuk Masa Depan.</h1>
+    <p class="lead">Belajar mengolah sampah menjadi produk kreatif yang bermanfaat melalui prinsip 3R (Reduce, Reuse, Recycle). Proyek ini menggabungkan pembelajaran lintas mata pelajaran dengan metode Waterfall.</p>
+    <a href="#produk" class="btn utama">Jelajahi Karya →</a>
+    <a href="#about" class="btn sekunder">Tentang Kami</a>
+
+    <div class="masalah">
+      <h2>Permasalahan Utama</h2>
+      <p>Limbah mouse dan keyboard menjadi masalah utama karena mengandung zat yang sulit terurai bagi lingkungan dan menganggu kesehatan. Jumlahnya terus meningkat seiring dengan perkembangan teknologi yang pesat. Proses daur ulangnya yang rumit dan mahal menyebabkan banyak keyboard dan mouse dibuang sembarangan, mencemari tanah dan air</p>
+    </div>
+  </div>
+</section>
+
+<!-- ANALISIS -->
+<section id="about">
+  <div class="wrap">
+    <p class="label">Arah solusi</p>
+    <h2>Analisis Penyelesaian Masalah</h2>
+    <p class="sub">Pengelolaan limbah keyboard dan mouse perlu dilakukan dari berbagai sisi: membangun kebiasaan yang tepat, membuka jalur daur ulang, dan mendukung pemanfaatan kembali.</p>
+    <div class="grid">
+      <div class="kartu"><h3>Perkuat daur ulang</h3><p>Sediakan sistem pengumpulan dan pengolahan limbah elektronik yang lebih mudah dijangkau.</p></div>
+      <div class="kartu"><h3>Tingkatkan edukasi</h3><p>Jelaskan bahaya e-waste dan cara membuang atau menyerahkan perangkat elektronik dengan benar.</p></div>
+      <div class="kartu"><h3>Gunakan kembali</h3><p>Manfaatkan komponen motherboard yang masih layak menjadi produk kreatif, seperti jam atau hiasan.</p></div>
+      <div class="kartu"><h3>Dukung perubahan</h3><p>Dorong inovasi teknologi ramah lingkungan serta kebijakan yang membantu pengelolaan e-waste.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUK -->
+<section id="produk">
+  <div class="wrap">
+    <h2>Produk Kami</h2>
+    <p class="sub">Ide sederhana, dampak nyata. Kenali karya yang lahir dari proses belajar dan kepedulian terhadap lingkungan.</p>
+    <div class="grid">
+
+      <article class="produk">
+        <a href="ipas1.html" target="_self"><img src="fotoipa.jpeg" alt="Kolaboratif ipas"></a>
+        <div class="isi">
+          <span class="tag">Cerita proyek</span>
+          <h3>Pendahuluan Produk-Produk Recycle</h3>
+          <p>Menjelajahi ide-ide kreatif dalam mengubah sampah jadi karya bernilai tinggi.</p>
+          <a class="lihat" href="ipas1.html">Lihat detail ↗</a>
+        </div>
+      </article>
+
+      <article class="produk">
+        <a href="Produk.html" target="_self"><img src="FotoProject.jpeg" alt="Hiasan periferal"></a>
+        <div class="isi">
+          <span class="tag">E-waste</span>
+          <h3>Hiasan Periferal</h3>
+          <p>Kreasi unik hiasan periferal bunga dan pensil dari keyboard dan mouse bekas, bergaya dan ramah lingkungan!</p>
+          <a class="lihat" href="Produk.html">Lihat detail ↗</a>
+        </div>
+      </article>
+
+
+
+
+      <article class="produk">
+        <a href="kesimpulan.html" target="_self"><img src="FotoEX.jpeg" alt="kesimpulan"></a>
+        <div class="isi">
+          <span class="tag">Rangkuman</span>
+          <h3>Kesimpulan Pemilihan Produk Kolaboratif.</h3>
+          <p>Kesimpulan tentang produk yang dipilih dan alasan di balik keputusan tim.</p>
+          <a class="lihat" href="kesimpulan.html">Lihat detail ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- MATA PELAJARAN -->
+<section id="mapel">
+  <div class="wrap">
+    <h2>Mata Pelajaran</h2>
+
+    <div class="mapel" id="matematika">
+      <h3>Matematika</h3>
+      <p>Mendesain iklan bundling produk daur ulang kolaboratif Matematika.</p>
+      <div class="kartu-grid">
+        <article class="card">
+          <img src="fotoprodukberlian.jpeg" alt="fotoprodukberlian">
+          <div class="isi">
+            <span class="tag">Matematika</span>
+            <h4>Jam Harddisk &amp; Lampu Meja</h4>
+            <p class="ringkas">Sistem persamaan: 2x + 3y = 440.000 dan x + y = 175.000. Hasilnya x = Rp.85.000 dan y = Rp.90.000.</p>
+            <details>
+              <summary>Lihat penyelesaian</summary>
+              <div class="dalam"><h5>Permisalan</h5>
+<p><br>x = Harga dari 1 Jam Harddisk<br>y = Harga dari 1 Lampu Meja</p>
+<h5>Permodelan</h5>
+<code>2x + 3y = 440.000
+x + y = 175.000</code>
+<h5>Eliminasi</h5>
+<code>2x + 3y = 440.000 (×1) 
+x + y = 175.000 (×3) 
+__________________________
+2x + 3y = 440.000
+3x + 3y = 525.000
+____________________ -
+-x          = -85. 000
+x           = 85.000
+</code>
+<h5>Substitusi</h5>
+<code>2x + 3y = 440.000
+  2.85.000 + 3y = 440.000
+  170.000 + 3y = 440.000
+3y = 440.000 − 170.000
+3y = 270.000
+y = 270.000 ÷ 3
+y = 90.000</code>
+<h5>Hasil</h5>
+<p>Jadi,harga dari 1 ja hardisk adalah<b>Rp.85.000 </b></p>  <p>dan harga dari 1 lampu mej adalah<br><b>Rp.90.000</b></p></div>
+            </details>
+          </div>
+        </article>
+        <article class="card">
+          <img src="fotoprodukdyah.jpeg" alt="fotoprodukdyah">
+          <div class="isi">
+            <span class="tag">Matematika</span>
+            <h4>Sound System Bluetooth &amp; Robot Mouse Bekas</h4>
+            <p class="ringkas">Sistem persamaan: 3x + 2y = 650.000 dan x + 2y = 350.000. Hasilnya x = Rp.150.000 dan y = Rp.100.000.</p>
+            <details>
+              <summary>Lihat penyelesaian</summary>
+              <div class="dalam"><h5>Permisalan</h5>
+<p>x = Harga 1 Sound System Bluetooth dari CPW bekas<br>y = Harga 1 Robot dari Mouse Bekas</p>
+<h5>Permodelan</h5>
+<code>3x + 2y = 650.000
+x + 2y = 350.000</code>
+<h5>Eliminasi</h5>
+<code>3x + 2y = 650.000
+x + 2y = 350.000   −
+-----------------------
+2x = 300.000
+x = 300.000 ÷ 2
+x = 150.000</code>
+<h5>Substitusi</h5>
+<code>x + 2y = 350.000
+150.000 + 2y = 350.000
+2y = 350.000 − 150.000
+2y = 200.000
+y = 200.000 ÷ 2
+y = 100.000</code>
+<p>Jadi harga dari 1 Suond System Blutooth dari CPW bekas adalah <b>Rp.150.000</b> dan harga dari 1 Robot dari mouse adalah  <b>Rp.100.000</b>.</p></div>
+            </details>
+          </div>
+        </article>
+        <article class="card">
+          <img src="fotoprodukdani.jpeg" alt="fotoprodukdani">
+          <div class="isi">
+            <span class="tag">Matematika</span>
+            <h4>Kreabel Laptop Bag &amp; Motherboard to Mother Time</h4>
+            <p class="ringkas">Sistem persamaan: x + 2y = 320.000 dan 2x + 3y = 520.000. Hasilnya x = Rp.80.000 dan y = Rp.120.000.</p>
+            <details>
+              <summary>Lihat penyelesaian</summary>
+              <div class="dalam"><h5>Permisalan</h5>
+<p>x = Harga 1 Kreabel Laptop Bag<br>y = Harga 1 Motherboard to Mother Time</p>
+<h5>Permodelan/h5>
+<code>x + 2y = 320.000
+2x + 3y = 520.000</code>
+<h5>Eliminasi</h5>
+<code>x + 2y = 320.000   (×3)
+2x + 3y = 520.000  (×2)
+-----------------------
+3x + 6y = 960.000
+4x + 6y = 1.040.000  −
+-----------------------
+-x = -80.000
+x = 80.000</code>
+<h5>Substitusi</h5>
+<code>x + 2y = 320.000
+80.000 + 2y = 320.000
+2y = 320.000 − 80.000
+2y = 240.000
+y = 240.000 ÷ 2
+y = 120.000</code>
+<p>Jadi harga harga dari 1 kreabel laptop bag adalah <b>Rp.80.000</b> dan harga dari 1 Motherboard to Mother time adalah <b>Rp.120.000</b>.</p></div>
+            </details>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="mapel" id="bahasa-inggris">
+      <h3>Bahasa Inggris</h3>
+      <p>Explanation text tentang proses perubahan limbah elektronik menjadi produk baru yang bermanfaat.</p>
+      <div class="kartu-grid">
+        <article class="card">
+          
+          <div class="isi">
+            <span class="tag">Berlian Muhammad Firdaus</span>
+            <p class="ringkas">Explanation text.</p>
+            <details>
+              <summary>Baca teks</summary>
+              <div class="dalam"><h5>Paragraph 1 – General Statement</h5><p>Electronic waste remains a pressing environmental issue alongside fast‑growing digital technology. Old hard‑drives and discarded circuit‑board components are commonly thrown away once devices break or get replaced. Even so, many solid parts from these old electronics still have reuse potential. One practical creative solution is turning used hard‑drive casings and circuit‑board scraps into an aesthetic desk clock paired with a mini desk‑lamp decoration. This idea proves that thrown‑away electronic parts can be rebuilt into beautiful, usable tabletop items.</p><h5>Paragraph 2 – The Transformation Process</h5><p>The process starts by gathering intact used hard‑drive units and leftover circuit‑board pieces. Usable sections are picked out, thoroughly cleaned, and separated from broken wiring or dangerous electronic parts. Next, the selected components are prepared to build the core sections of the set. A hard‑drive plate becomes the clock base, while circuit‑board fragments form the foundation for the small desk lamp. At this step, the original function of these computer parts shifts completely toward a new decorative purpose.</p><h5>Paragraph 3 – The Formation of a New Product</h5><p>The cleaned hard‑drive and circuit‑board pieces are assembled carefully to finish the decoration set. The hard‑drive assembly is fitted with a clock movement to work as a functional desk clock, and the circuit‑board base is attached with a small lamp module for lighting. Every piece is fixed neatly to keep its original tech‑style look and make the set unique. After all components are secured properly, a complete desk‑clock and desk‑lamp decoration set is finished.</p><h5>Paragraph 4 – The Result and Its Impact</h5><p>Finally, discarded hard‑drive and circuit‑board materials turn into a desk‑clock plus desk‑lamp decoration that holds both practical and aesthetic value. People can place this set on their study or work desks to tell time and add soft lighting. This craft helps cut down electronic waste and inspires others to repurpose old electronics instead of throwing them out. Hence, recycling used hard‑drive and circuit‑board parts into functional desk decorations supports sustainable habits and a healthier environment.</p></div>
+            </details>
+          </div>
+        </article>
+        <article class="card">
+          <div class="isi">
+            <span class="tag">Dyah Ayu Wulandari</span>
+            <p class="ringkas">Explanation text.</p>
+            <details>
+              <summary>Baca teks</summary>
+              <div class="dalam"><h5>Paragraph 1 – General Statement</h5><p>Electronic waste (e-waste), such as broken keyboards and unused computer mice, often accumulates and poses environmental challenges if not managed properly. However, these components are made of durable plastic materials that still hold high potential for reuse. Through a creative approach, unused keyboards and mice can be repurposed into a functional desk organizer with a futuristic aesthetic. This transformation demonstrates how computer hardware waste can be converted into useful and valuable products.</p><h5>Paragraph 2 – The Transformation Process</h5><p>The transformation process begins by disassembling the unused keyboards and mice, followed by thoroughly cleaning all surface dust. Keycaps are removed and sorted, particularly letter keys selected to spell out environmental themes such as "REUSE", "REPAIR", and "RECYCLE". The internal electronic circuits of the mouse bodies are removed so they can serve as holders or docks. At this stage, the original function of the computer peripherals as input devices completely changes into structural and decorative elements.</p><h5>Paragraph 3 – The Formation of a New Product</h5><p>The cleaned components are then assembled onto a multi-tiered base structure. The mouse holder is secured on top to hold active mice or stationary items. On the front section, the keyboard keys are neatly attached to form inspirational keywords. Additional mini-compartments are integrated to accommodate small potted plants (such as succulents), pens, and pencils. Blue line accents and recycling symbols are applied to enhance the tech-inspired, eco-friendly aesthetic.</p><h5>Paragraph 4 – The Result and Its Impact</h5><p>As a result, old keyboards and mice are transformed into a multi-functional desk organizer that holds stationery, accommodates a mini plant pot, and serves as unique desk decor. This product not only helps keep workspace essentials organized but also stands as a practical example of reducing electronic waste through reuse and recycle principles.</p></div>
+            </details>
+          </div>
+        </article>
+        <article class="card">
+          <div class="isi">
+            <span class="tag">Muhamad Danian Alrizqi</span>
+            <p class="ringkas">Explanation text.</p>
+            <details>
+              <summary>Baca teks</summary>
+              <div class="dalam"><h5>Paragraph 1 – General Statement</h5><p>Electronic waste is one of the environmental problems caused by the rapid development of technology. Old computer peripherals, such as keyboards, mice, and computer accessories, are often discarded when they are damaged or no longer needed. However, some of their plastic parts can still be reused. One creative way to manage this waste is by transforming old computer peripheral materials into a mini flower and pencil decoration. This transformation shows how electronic waste can become a useful and attractive product.</p><h5>Paragraph 2 – The Transformation Process</h5><p>The transformation begins by collecting unused computer peripheral materials. The plastic parts are selected, cleaned, and separated from other electronic components. After that, the materials are prepared to become the main parts of the decoration. Some plastic pieces are used as the base and pencil holder, while other materials are used to create decorative details. At this stage, the original function of the computer peripherals changes into something new and creative.</p><h5>Paragraph 3 – The Formation of a New Product</h5><p>The cleaned plastic materials are arranged and combined to create a mini decoration. The main part is used as a container for pencils, while a small artificial flower is placed on top to make the product more attractive. The peripheral materials are attached and decorated neatly to create a unique technological appearance. Once all the parts are firmly attached, they become one complete mini flower and pencil decoration.</p><h5>Paragraph 4 – The Result and Its Impact</h5><p>As a result, unused computer peripheral materials are transformed into a mini flower and pencil decoration that has both functional and aesthetic value. The product can be used as a pencil holder and a decorative item for a study desk. This transformation helps reduce electronic waste and encourages people to reuse materials that are still useful. Therefore, recycling computer peripheral materials into creative products is one way to support a cleaner and more sustainable environment.</p></div>
+            </details>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANGGOTA -->
+<section id="member-wo">
+  <div class="wrap">
+    <h2>Anggota Kelompok</h2>
+    <div class="grid" style="margin-top:32px">
+
+      <div class="anggota">
+        <img src="WhatsApp Image 2026-11-11 at 06.04.16.jpeg" alt="Foto Berlian Muhammad Firdaus">
+        <h3>Berlian Muhammad Firdaus</h3>
+      </div>
+
+      <div class="anggota">
+        <img src="WhatsApp Image 2026-11-11 at 05.53.11.jpeg" alt="Foto  Dyah Ayu Wulandari">
+        <h3>Dyah Ayu Wulandari</h3>
+      </div>
+
+      <div class="anggota">
+        <img src="WhatsApp Image 2026-11-11 at 05.53.11 (1).jpeg" alt="Foto  Muhamad Danian Alrizqi">
+        <h3>Muhamad Danian Alrizqi</h3>
+      </div>
+
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div>
+      
+        <h3>Sampahku Hartaku</h3>
+        <p>Website edukasi dan inovasi pengelolaan sampah untuk proyek kolaboratif kelompok kami.</p>
+      </div>
+      <div>
+        <a href="#home">Beranda</a>
+        <a href="#about">Tentang</a>
+        <a href="#produk">Produk</a>
+        <a href="#mapel">Mata Pelajaran</a>
+        <a href="#member-wo">Anggota</a>
+      </div>
+    </div>
+    <p class="hak">© 2026 <b>Trash to money</b> · Hak cipta dilindungi.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('menuBtn'),list=document.getElementById('menuList');
+  function tutup(){list.classList.remove('buka');btn.setAttribute('aria-expanded','false')}
+  btn.addEventListener('click',function(){
+    var buka=list.classList.toggle('buka');
+    btn.setAttribute('aria-expanded',buka?'true':'false');
+  });
+  list.addEventListener('click',function(e){if(e.target.tagName==='A')tutup()});
+  document.addEventListener('click',function(e){if(!e.target.closest('header'))tutup()});
+
+  // tandai menu aktif sesuai bagian yang sedang dilihat
+  var links=[].slice.call(list.querySelectorAll('a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+  function update(){
+    var y=window.scrollY+120,idx=0;
+    secs.forEach(function(s,i){if(s&&s.offsetTop<=y)idx=i});
+    if(window.innerHeight+window.scrollY>=document.body.scrollHeight-4)idx=secs.length-1;
+    links.forEach(function(a,i){a.classList.toggle('aktif',i===idx)});
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  update();
+})();
+</script>
+</body>
+</html>
